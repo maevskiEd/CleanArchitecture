@@ -12,7 +12,10 @@ import com.example.cleanarchitecturekiparokovalenko.domain.repository.UserReposi
 //репозитории и стораджи должны быть без if
 //Если хочется добавить if, то создаем новый UseCase
 //мапперы - хороший вариант, но extension - еще лучший вариант
-class UserRepositoryImpl(private val userStorage: UserStorage, private val networkApi: NetworkApi) :
+class UserRepositoryImpl(
+    private val userStorage: UserStorage,
+    private val networkApi: NetworkApi? = null
+) :
     UserRepository {
 
     override fun saveName(saveParam: SaveUserNameParam): Boolean {

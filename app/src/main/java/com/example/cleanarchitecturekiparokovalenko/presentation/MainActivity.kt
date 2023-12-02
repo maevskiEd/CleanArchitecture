@@ -1,9 +1,10 @@
 package com.example.cleanarchitecturekiparokovalenko.presentation
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.cleanarchitecturekiparokovalenko.data.NetworkApi
 import com.example.cleanarchitecturekiparokovalenko.data.repository.UserRepositoryImpl
+import com.example.cleanarchitecturekiparokovalenko.data.storage.sharedprefs.SharedPrefUserStorage
 import com.example.cleanarchitecturekiparokovalenko.databinding.ActivityMainBinding
 import com.example.cleanarchitecturekiparokovalenko.domain.models.SaveUserNameParam
 import com.example.cleanarchitecturekiparokovalenko.domain.models.UserName
@@ -17,9 +18,23 @@ class MainActivity : AppCompatActivity() {
 
     //by lazy означает что объект будет создан тогда, когда он нам понадобится
     //по умолчанию lazy синхронизирован, нам этого не надо - by lazy(LazyThreadSafetyMode.NONE)
-    private val userRepository by lazy(LazyThreadSafetyMode.NONE) { UserRepositoryImpl(context = applicationContext) }
-    private val getUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) { GetUserNameUseCase(userRepository = userRepository) }
-    private val saveUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) { SaveUserNameUseCase(userRepository = userRepository) }
+    private val userRepository by lazy(LazyThreadSafetyMode.NONE) {
+        UserRepositoryImpl(
+            userStorage = SharedPrefUserStorage(
+                context = applicationContext
+            )
+        )
+    }
+    private val getUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) {
+        GetUserNameUseCase(
+            userRepository = userRepository
+        )
+    }
+    private val saveUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) {
+        SaveUserNameUseCase(
+            userRepository = userRepository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
