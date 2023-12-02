@@ -1,4 +1,4 @@
-package com.example.cleanarchitecturekiparokovalenko
+package com.example.cleanarchitecturekiparokovalenko.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +9,7 @@ import com.example.cleanarchitecturekiparokovalenko.domain.usecase.GetUserNameUs
 import com.example.cleanarchitecturekiparokovalenko.domain.usecase.SaveUserNameUseCase
 
 //Самая главная логика presentation слоя показывать данные и забирать что-то от пользователя
+//видео 2
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
