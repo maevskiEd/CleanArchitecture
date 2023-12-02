@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -56,6 +57,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
+
+    //Dagger
+    implementation ("com.google.dagger:dagger:2.47")
+    implementation ("com.google.dagger:dagger-android-support:2.47")
+    kapt ("com.google.dagger:dagger-android-processor:2.47")
+    kapt ("com.google.dagger:dagger-compiler:2.47")
 
 
 }
