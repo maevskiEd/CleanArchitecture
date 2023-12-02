@@ -2,6 +2,9 @@ package com.example.cleanarchitecturekiparokovalenko.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.cleanarchitecturekiparokovalenko.data.repository.UserRepositoryImpl
 import com.example.cleanarchitecturekiparokovalenko.data.storage.sharedprefs.SharedPrefUserStorage
 import com.example.cleanarchitecturekiparokovalenko.databinding.ActivityMainBinding
@@ -14,26 +17,13 @@ import com.example.cleanarchitecturekiparokovalenko.domain.usecase.SaveUserNameU
 //видео 2
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainActivityViewModel: MainActivityViewModel
+
+//    private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     //by lazy означает что объект будет создан тогда, когда он нам понадобится
     //по умолчанию lazy синхронизирован, нам этого не надо - by lazy(LazyThreadSafetyMode.NONE)
-    private val userRepository by lazy(LazyThreadSafetyMode.NONE) {
-        UserRepositoryImpl(
-            userStorage = SharedPrefUserStorage(
-                context = applicationContext
-            )
-        )
-    }
-    private val getUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) {
-        GetUserNameUseCase(
-            userRepository = userRepository
-        )
-    }
-    private val saveUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) {
-        SaveUserNameUseCase(
-            userRepository = userRepository
-        )
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,17 +31,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.e("TAG", "Activity Created")
+
+        mainActivityViewModel = ViewModelProvider(
+            this,
+            MainActivityViewModelFactory(this)
+        ).get(MainActivityViewModel::class.java)
+
+        mainActivityViewModel.resultLive.observe(this) { text ->
+            binding.dataTextView.text = text
+        }
+
         binding.sendButton.setOnClickListener {
             val text = binding.dataEditText.text.toString()
-            val params =
-                SaveUserNameParam(name = text)
-            val result: Boolean = saveUserNameUseCase.execute(param = params)
-            binding.dataTextView.text = "Save result =$result"
+            mainActivityViewModel.save(text)
         }
 
         binding.receiveButton.setOnClickListener {
-            val userName: UserName = getUserNameUseCase.execute()
-            binding.dataTextView.text = "${userName.firstName} ${userName.lastName}"
+            mainActivityViewModel.load()
         }
     }
 }
