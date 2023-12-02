@@ -1,7 +1,9 @@
 package com.example.cleanarchitecturekiparokovalenko.presentation
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.cleanarchitecturekiparokovalenko.data.repository.UserRepositoryImpl
 import com.example.cleanarchitecturekiparokovalenko.databinding.ActivityMainBinding
 import com.example.cleanarchitecturekiparokovalenko.domain.models.SaveUserNameParam
 import com.example.cleanarchitecturekiparokovalenko.domain.models.UserName
@@ -13,8 +15,11 @@ import com.example.cleanarchitecturekiparokovalenko.domain.usecase.SaveUserNameU
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    private val getUserNameUseCase = GetUserNameUseCase()
-    private val saveUserNameUseCase = SaveUserNameUseCase()
+    //by lazy означает что объект будет создан тогда, когда он нам понадобится
+    //по умолчанию lazy синхронизирован, нам этого не надо - by lazy(LazyThreadSafetyMode.NONE)
+    private val userRepository by lazy(LazyThreadSafetyMode.NONE) { UserRepositoryImpl(context = applicationContext) }
+    private val getUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) { GetUserNameUseCase(userRepository = userRepository) }
+    private val saveUserNameUseCase by lazy(LazyThreadSafetyMode.NONE) { SaveUserNameUseCase(userRepository = userRepository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding.sendButton.setOnClickListener {
             val text = binding.dataEditText.text.toString()
             val params = SaveUserNameParam(name = text)
-            val result: Boolean = saveUserNameUseCase.execute(param =params)
+            val result: Boolean = saveUserNameUseCase.execute(param = params)
             binding.dataTextView.text = "Save result =$result"
         }
 
