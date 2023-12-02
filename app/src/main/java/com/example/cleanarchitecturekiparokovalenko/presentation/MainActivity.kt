@@ -2,7 +2,6 @@ package com.example.cleanarchitecturekiparokovalenko.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.cleanarchitecturekiparokovalenko.data.NetworkApi
 import com.example.cleanarchitecturekiparokovalenko.data.repository.UserRepositoryImpl
 import com.example.cleanarchitecturekiparokovalenko.data.storage.sharedprefs.SharedPrefUserStorage
 import com.example.cleanarchitecturekiparokovalenko.databinding.ActivityMainBinding
@@ -44,7 +43,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.sendButton.setOnClickListener {
             val text = binding.dataEditText.text.toString()
-            val params = SaveUserNameParam(name = text)
+            val params =
+                SaveUserNameParam(name = text)
             val result: Boolean = saveUserNameUseCase.execute(param = params)
             binding.dataTextView.text = "Save result =$result"
         }
