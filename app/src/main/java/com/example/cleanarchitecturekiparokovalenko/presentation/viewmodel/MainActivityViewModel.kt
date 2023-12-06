@@ -1,4 +1,4 @@
-package com.example.cleanarchitecturekiparokovalenko.presentation
+package com.example.cleanarchitecturekiparokovalenko.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

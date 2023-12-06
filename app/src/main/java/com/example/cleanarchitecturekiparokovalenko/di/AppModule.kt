@@ -3,7 +3,7 @@ package com.example.cleanarchitecturekiparokovalenko.di
 import android.content.Context
 import com.example.cleanarchitecturekiparokovalenko.domain.usecase.GetUserNameUseCase
 import com.example.cleanarchitecturekiparokovalenko.domain.usecase.SaveUserNameUseCase
-import com.example.cleanarchitecturekiparokovalenko.presentation.MainActivityViewModelFactory
+import com.example.cleanarchitecturekiparokovalenko.presentation.viewmodelfactory.MainActivityViewModelFactory
 import dagger.Module
 import dagger.Provides
 
